@@ -1,0 +1,50 @@
+.carousel-inner img {
+    margin: auto;
+  }
+
+.landingImage
+{
+    width: 40em;
+    height: 30em;
+}
+
+#regSubmitButton
+{
+  width: 100%;
+  background-color: rgba(4, 187, 187, 0.733);
+}
+
+#loginSubmitButton
+{
+  width: 100%;
+  background-color: rgba(4, 187, 187, 0.733);
+}
+
+form
+{
+  background-color: whitesmoke;
+}
+
+h1
+{
+  font-family: 'Permanent Marker', serif;
+  color: rgb(204, 203, 203);
+}
+
+h5
+{
+  font-family: 'Handlee', serif;
+  color: whitesmoke;
+
+}
+
+.card-header
+{
+  font-family: 'Handlee', serif;
+}
+
+
+input
+{
+  font-family: 'Handlee', serif;
+}
