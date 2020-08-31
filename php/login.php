@@ -12,18 +12,17 @@
     $email = isset($_POST["loginEmail"]) ? $_POST["loginEmail"] : false;
     $pass = isset($_POST["loginPassword"]) ? $_POST["loginPassword"] : false;	
 
-    $sql = "SELECT * FROM tbusers WHERE email = '$email'";
+    $sql = "SELECT * FROM tbusers WHERE user_email = '$email'";
 
 	$result = $mysqli->query($sql);
-
 	if($result && $result->num_rows > 0)
 	{
         while($row = mysqli_fetch_assoc($result))
 		{
-            if($row["password"] == $password)
+            if($row["user_password"] == $pass)
             {
                 //successfull login
-                header("Location: html/homepage.html", true, 301);
+                header("Location: ../html/homepage.html", true, 301);
                 exit();
             }
             else
