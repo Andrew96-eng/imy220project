@@ -14,7 +14,8 @@
 
     $sql = "SELECT * FROM tbusers WHERE user_email = '$email'";
 
-	$result = $mysqli->query($sql);
+    $result = $mysqli->query($sql);
+    
 	if($result && $result->num_rows > 0)
 	{
         while($row = mysqli_fetch_assoc($result))
@@ -35,5 +36,5 @@
     {
         // Failed login
     }
-
+    
 ?>
