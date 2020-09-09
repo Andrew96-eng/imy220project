@@ -1,0 +1,38 @@
+.navbar-brand
+{
+  font-family: 'Permanent Marker', serif;
+  color: rgb(204, 203, 203);
+}
+
+h3
+{
+   font-family: 'Caveat', serif;
+   color: rgb(204, 203, 203);
+   font-size: larger;
+}
+
+.activityFeed
+{
+  border: 1px solid grey;
+  height: 150em;
+  overflow: auto;
+}
+
+.profile
+{
+  border: 1px solid grey;
+  height: 20em;
+}
+
+.upload
+{
+  border: 1px solid grey;
+  height: 20em;
+}
+
+.profilePicture
+{
+  width:10em;
+  height: 10em;
+  border-radius: 1em;
+}
