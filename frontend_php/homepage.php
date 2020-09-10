@@ -32,18 +32,15 @@
     $imagePath = $_SERVER['DOCUMENT_ROOT'] . "/imy_220/Project/images/";
     
 			// User folder
-			if(!is_dir($imagePath . $userID . "/"))
-			{
-				mkdir($imagePath . $userID . "/");
-			}
-      $imagePath = $imagePath . $userID . "/";
+		
+    
       
     $totalfiles = count($_FILES['postimages']['name']);
 
     for($i = 0; $i < $totalfiles; $i++)
     {
       $imagePath = $_SERVER['DOCUMENT_ROOT'] . "/imy_220/Project/images/";
-      $imagePath = $imagePath . $userID . "/";
+     
       $picToUpload = basename($_FILES["postimages"]["name"][$i]);
       $tmpFilePath = $_FILES['postimages']['tmp_name'][$i];
 
@@ -162,13 +159,13 @@
                     if($j == 0)
                     {
                         $imageout = $imageout . "<div class='carousel-item active'>
-                                  <img class='d-block w-100 postImage' src='../images/$userID/".$imagenames[$j]."' alt='".$imagenames[$j]."'>
+                                  <img class='d-block w-100 postImage' src='../images/".$imagenames[$j]."' alt='".$imagenames[$j]."'>
                                 </div>";
                     }
                     else
                     {
                       $imageout = $imageout . "<div class='carousel-item'>
-                                  <img class='d-block w-100 postImage' src='../images/$userID/".$imagenames[$j]."' alt='".$imagenames[$j]."'>
+                                  <img class='d-block w-100 postImage' src='../images/".$imagenames[$j]."' alt='".$imagenames[$j]."'>
                            </div>";
                     }
                   }
