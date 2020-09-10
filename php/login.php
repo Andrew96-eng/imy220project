@@ -23,7 +23,7 @@
             if($row["user_password"] == $pass)
             {
                 //successfull login
-                header("Location: ../frontend_php/homepage.php", true, 301);
+                header("Location: ../frontend_php/homepage.php?id=".$row["user_id"], true, 301);
                 exit();
             }
             else

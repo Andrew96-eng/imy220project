@@ -3,31 +3,51 @@
   font-family: 'Permanent Marker', serif;
   color: rgb(204, 203, 203);
 }
-
+h1
+{
+  font-family: 'Permanent Marker', serif;
+}
+p
+{
+  font-family: 'Source Sans Pro', serif;
+}
+label
+{
+  font-family: 'Source Sans Pro', serif;
+}
 h3
 {
    font-family: 'Caveat', serif;
-   color: rgb(204, 203, 203);
-   font-size: larger;
+   color: rgb(151, 149, 149);
+   font-size: medium;
+}
+.postImage
+{
+  width:10em;
+  height: 10em;
+}
+h5
+{
+   font-family: 'Caveat', serif;
+   color: rgb(151, 149, 149);
+  
 }
 
 .activityFeed
 {
-  border: 1px solid grey;
-  height: 150em;
+  height: 100%;
   overflow: auto;
 }
 
 .profile
 {
-  border: 1px solid grey;
   height: 20em;
 }
 
 .upload
 {
-  border: 1px solid grey;
   height: 20em;
+  box-shadow: grey;
 }
 
 .profilePicture
@@ -35,4 +55,10 @@ h3
   width:10em;
   height: 10em;
   border-radius: 1em;
+}
+
+#postSubmitButton
+{
+  width: 100%;
+  background-color: rgba(4, 187, 187, 0.733);
 }
