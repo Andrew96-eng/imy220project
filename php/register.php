@@ -23,8 +23,13 @@
     {
 		$query2 = "SELECT user_id FROM tbusers WHERE user_email = '$email'";
 		$res2 = mysqli_query($mysqli, $query2);
+		$userID = "";
+		while($row = mysqli_fetch_assoc($res2))
+        {
+			$userID = $row["user_id"];
+		}
         // successfull
-        header("Location: ../frontend_php/homepage.php?id=" . $res2["user_id"], true, 301);
+        header("Location: ../frontend_php/homepage.php?id=" . $userID, true, 301);
         exit();
     }
     else

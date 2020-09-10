@@ -202,7 +202,7 @@
 
           </div>
 
-          <div class="col-lg-3 upload">
+          <div class="col-lg-3 upload mt-5">
 
             <div class="card">
               <div class="card-body">
