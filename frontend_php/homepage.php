@@ -1,8 +1,8 @@
 <?php
     $server = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "dbProject";
+    $username = "u15191223";
+    $password = "xtsheery";
+    $database = "dbu15191223";
     $mysqli = mysqli_connect($server, $username, $password, $database);
     $userFirstName;
     $userSurname;
@@ -29,7 +29,7 @@
       $userFirstName = $row["user_name"];
       $userSurname = $row["user_surname"];
     }
-    $imagePath = $_SERVER['DOCUMENT_ROOT'] . "/imy_220/Project/images/";
+    $imagePath = "../images/";
     
 			// User folder
 		
@@ -39,7 +39,7 @@
 
     for($i = 0; $i < $totalfiles; $i++)
     {
-      $imagePath = $_SERVER['DOCUMENT_ROOT'] . "/imy_220/Project/images/";
+      $imagePath = "../images/";
      
       $picToUpload = basename($_FILES["postimages"]["name"][$i]);
       $tmpFilePath = $_FILES['postimages']['tmp_name'][$i];

@@ -4,9 +4,9 @@
 	ini_set('error_reporting', E_ALL);
 
 	$server = "localhost";
-	$username = "root";
-	$password = "";
-	$database = "dbProject";
+    $username = "u15191223";
+    $password = "xtsheery";
+    $database = "dbu15191223";
 	$mysqli = mysqli_connect($server, $username, $password, $database);
 
 	$name = $_POST["regName"];
