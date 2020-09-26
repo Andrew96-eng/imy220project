@@ -62,3 +62,9 @@ h5
   width: 100%;
   background-color: rgba(4, 187, 187, 0.733);
 }
+
+.postnamelink
+{
+  color: black;
+  text-decoration: none;
+}

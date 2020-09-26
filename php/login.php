@@ -1,12 +1,8 @@
 <?php
-
+    include 'mysqllogin.php';
     error_reporting(E_ALL);
     ini_set('error_reporting', E_ALL);
 
-    $server = "localhost";
-    $username = "u15191223";
-    $password = "xtsheery";
-    $database = "dbu15191223";
     $mysqli = mysqli_connect($server, $username, $password, $database);
 
     $email = isset($_POST["loginEmail"]) ? $_POST["loginEmail"] : false;
