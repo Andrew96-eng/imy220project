@@ -1,0 +1,15 @@
+.comment-block
+{
+    border: 1px solid darkgray;
+    border-radius: 1em;
+    padding:5px;
+    margin-bottom: 1em;
+    margin-top: 3em;
+    background-color: rgba(193,190,190,0.4);
+    height: auto;
+}
+
+.comment-block-user
+{
+    margin-top: 1em;
+}
