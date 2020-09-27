@@ -160,13 +160,14 @@ else {
                 while ($row = mysqli_fetch_assoc($commentRes))
                 {
                     $outString = "";
+                    $commentID = $row["comment_id"];
                     $commentUserSql = "SELECT * FROM tbusers WHERE user_id=" . $row["user_id"];
                     $commentUserRes = mysqli_query($mysqli, $commentUserSql);
                     while($row2 = mysqli_fetch_assoc($commentUserRes))
                     {
-                        $outString = "<div class='comment-block'>" . $row["comment_text"] . "<div class='comment-block-user mr-1 mt-2 mb-1' style='float:right;'>-" . $row2["user_name"] . "<i class='ml-2 fa fa-flag' aria-hidden='true'></i>";
+                        $outString = "<div id='comment$commentID' class='comment-block'>" . $row["comment_text"] . "<div class='comment-block-user mr-1 mt-2 mb-1' style='float:right;'>-" . $row2["user_name"] . "<span onclick='reportComment($commentID)'> <i class='ml-2 fa fa-flag' aria-hidden='true'></i></span>";
                         if ($postUserID == $userID) {
-                            $outString = $outString . "<i class='ml-2 fa fa-trash' aria-hidden='true'></i>";
+                            $outString = $outString . "<span onclick='deleteComment($commentID)'> <i class='ml-2 fa fa-trash' aria-hidden='true'></i></span>";
                         }
                         $outString = $outString . "</div></div>";
                     }

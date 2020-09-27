@@ -50,10 +50,14 @@
                         }
                     }
                 }
+
+                echo $result;
             }
         }
         else
         {
-            
+            echo "No id";
         } 
     }
+
+?>
