@@ -36,7 +36,7 @@ if (isset($_GET["postID"])) {
     $postID = $_POST["post_id"];
     $userID = $_POST["user_id"];
     $commentText = $_POST["comment_text"];
-    $sql = "INSERT INTO tbcomments (post_id, comment_text, user_id) VALUES ($postID, '$commentText', $userID)";
+    $sql = "INSERT INTO tbcomments (post_id, comment_text, user_id) VALUES ($postID, '$commentText',".$_POST["user_id"].")";
     $response = $mysqli->query($sql);
     if ($response) {
         $sql2 = "SELECT * FROM tbposts WHERE post_id = $postID";
@@ -178,7 +178,11 @@ else if ($postID != "") {
                         <h3>Home</h3><span class="sr-only">(current)</span>
                     </a>
                 </li>
-
+                <li class="nav-item active">
+                    <a class="nav-link" href="profilepage.php?userId=<?php echo $userID; ?>">
+                        <h3>My Profile</h3>
+                    </a>
+                </li>
                 <li class="navbar-item pull-right">
                     <a class="nav-link" href="../php/logout.php" style="float: right;">
                         <h3>Logout</h3>

@@ -63,14 +63,43 @@ document.querySelectorAll(".uploadpp-input").forEach(inputElem => {
 
     }
 
-    function acceptFriendRequest(currentUserId, friendId)
+    function acceptFriendRequest(currentUserId, friendId,requestId)
     {
-
+      $.ajax({
+        type: "POST",
+        url: "../php/addFriend.php",
+        data: "uId=" + friendId +"&cUser=" + currentUserId + "&rid=" + requestId,
+        success: function (data) {
+            phpResult = data;
+            if(data == 200)
+            {
+                console.log(phpResult);
+                var sncakbar = document.getElementById("snackbar");
+                var text = sncakbar.innerHTML;
+                sncakbar.innerHTML = "Friend Added."
+                sncakbar.className = "show";
+                setTimeout(function(){ sncakbar.className = sncakbar.className.replace("show", ""); }, 3000);
+                sncakbar.innerHTML = text;
+                location.reload();
+            }
+        }
+    });
     }
 
     function followUser(currentUserId,otherUserId)
     {
-        
+      $.ajax({
+        type: "POST",
+        url: "../php/follower.php",
+        data: "uId=" + otherUserId +"&cUser=" + currentUserId,
+        success: function (data) {
+            phpResult = data;
+            if(data == 200)
+            {
+                location.reload();
+            }
+        }
+    });
     }
 
     //<div class="uploadpp-imagethumb" data-label="mypic.png"></div>

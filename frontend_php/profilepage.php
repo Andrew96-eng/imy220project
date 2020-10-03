@@ -52,14 +52,28 @@
     {
         $userID = $_GET["currentUserId"];
         $otherUserId = $_GET["otherUserId"];
-
-        $sql = "SELECT * FROM tbusers WHERE user_id=" . $otherUserId;
-        $res = mysqli_query($mysqli, $sql);
-        while ($row = mysqli_fetch_assoc($res)) {
-            $userFirstName = $row["user_name"];
-            $userSurname = $row["user_surname"];
-            $userProPic = $row["profile_picture"];
+        if($userID == $otherUserId)
+        {
+            $otherUserId = "-1";
+            $sql = "SELECT * FROM tbusers WHERE user_id=" . $userID;
+            $res = mysqli_query($mysqli, $sql);
+            while ($row = mysqli_fetch_assoc($res)) {
+                $userFirstName = $row["user_name"];
+                $userSurname = $row["user_surname"];
+                $userProPic = $row["profile_picture"];
+            }
         }
+        else
+        {
+            $sql = "SELECT * FROM tbusers WHERE user_id=" . $otherUserId;
+            $res = mysqli_query($mysqli, $sql);
+            while ($row = mysqli_fetch_assoc($res)) {
+                $userFirstName = $row["user_name"];
+                $userSurname = $row["user_surname"];
+                $userProPic = $row["profile_picture"];
+            }
+        }
+       
     }
 ?>
 
@@ -107,7 +121,7 @@
           </a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="profilepage.php?userId=<?php echo $userID; ?>">
             <h3>My Profile</h3><span class="sr-only">(current)</span>
           </a>
         </li>
@@ -121,7 +135,7 @@
     </div>
   </nav>
     <div class="row">
-        <div class="col-2"> 
+        <div class="col-3"> 
             <div class="row">
                 <div class="offset-1 offset-lg-3 col-12 mt-4">
                     <img src="../images/<?php echo $userProPic;?>" alt="profile picture" class="profilePicture">
@@ -138,8 +152,13 @@
                         {
                             $followerSql = "SELECT * FROM tbfollowers WHERE follows_userId = $otherUserId";
                         }
-                        $res = mysqli_query($mysqli, $sql);
-                        echo mysqli_num_rows($res)-1;
+                        $res = mysqli_query($mysqli, $followerSql);
+                        $count = 0;
+                        while($row =  mysqli_fetch_assoc($res))
+                        {
+                            $count = $count + 1;
+                        }
+                        echo $count;
                     ?></h2> 
                 <?php
                     if($otherUserId != "-1")
@@ -183,17 +202,19 @@
                     } 
                 ?>
                 </div>
-                <div class="col-11 offset-1 friendsList">
+                <div class="mt-5 col-11 offset-1 friendsList">
                     <h3>Friends List</h3>
                     <?php
-                        if($otherUserId != "-1")
+                    
+                        if($otherUserId == "-1")
                         {
                             $outputFriends = "";
                             // own profile page
                             $sql = "SELECT * FROM friends";
                             $res = mysqli_query($mysqli, $sql);
+                            
                             while ($row = mysqli_fetch_assoc($res)) 
-                            {
+                            {   
                                 if($row["user_id_1"] == $userID)
                                 {
                                     $friendUserId = $row["user_id_2"];
@@ -204,7 +225,7 @@
                                         $friendName = $row3["user_name"];
                                         $friendSurname = $row3["user_surname"];
                                     }
-                                    $outputFriends = $outputFriends . "<div class='searchUser'><h2>$friendName $friendSurname</h2><div onclick='messageFriend($userID,$friendUserId)'><i class='fa fa-envelope' aria-hidden='true'></i></div></div>";
+                                    $outputFriends = $outputFriends . "<span class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$userID&otherUserId=$friendUserId'><h2>$friendName $friendSurname</h2></a><div onclick='messageFriend($userID,$friendUserId)'><i class='fa fa-envelope' aria-hidden='true'></i></div></span>";
                                 }
                                 else if($row["user_id_2"] == $userID)
                                 {
@@ -216,7 +237,7 @@
                                         $friendName = $row3["user_name"];
                                         $friendSurname = $row3["user_surname"];
                                     }
-                                    $outputFriends = $outputFriends . "<div class='searchUser'><h2>$friendName $friendSurname</h2><div onclick='messageFriend($userID,$friendUserId)'><i class='fa fa-envelope' aria-hidden='true'></i></div></div>";
+                                    $outputFriends = $outputFriends . "<span class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$userID&otherUserId=$friendUserId'><h2>$friendName $friendSurname</h2></a><div onclick='messageFriend($userID,$friendUserId)'><i class='fa fa-envelope' aria-hidden='true'></i></div></span>";
                                 }
                             }
                             echo $outputFriends;
@@ -240,7 +261,7 @@
                                         $friendName = $row3["user_name"];
                                         $friendSurname = $row3["user_surname"];
                                     }
-                                    $outputFriends = $outputFriends . "<div class='searchUser'><h2>$friendName $friendSurname</h2></div>";
+                                    $outputFriends = $outputFriends . "<div class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$userID&otherUserId=$friendUserId'><h2>$friendName $friendSurname</h2></a></div>";
                                 }
                                 else if($row["user_id_2"] == $otherUserId)
                                 {
@@ -252,7 +273,7 @@
                                         $friendName = $row3["user_name"];
                                         $friendSurname = $row3["user_surname"];
                                     }
-                                    $outputFriends = $outputFriends . "<div class='searchUser'><h2>$friendName $friendSurname</h2></div>";
+                                    $outputFriends = $outputFriends . "<div class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$userID&otherUserId=$friendUserId'><h2>$friendName $friendSurname</h2></a></div>";
                                 }
                             }
                             echo $outputFriends;
@@ -267,7 +288,8 @@
                             $res2 = mysqli_query($mysqli, $sql2);
                             while ($row2 = mysqli_fetch_assoc($res2)) 
                             {
-                                $potentialFriend = $row["request_from"];
+                                $requestID = $row2["request_id"];
+                                $potentialFriend = $row2["request_from"];
                                 $friendDetails = "SELECT * FROM tbusers WHERE user_id = $potentialFriend";
                                 $friendRes = mysqli_query($mysqli, $friendDetails);
                                 $friendName = "";
@@ -277,7 +299,7 @@
                                     $friendName = $row3["user_name"];
                                     $friendSurname = $row3["user_surname"];
                                 }
-                                $outputRequests = $outputRequests . "<div class='searchUser'><h2>$friendName $friendSurname</h2><div onclick='acceptFriendRequest($userID,$potentialFriend)'><i class='fa fa-check' aria-hidden='true'></i></i></div></div>";
+                                $outputRequests = $outputRequests . "<div class='searchUser' id='potentialFriend$potentialFriend'><h2>$friendName $friendSurname</h2><div onclick='acceptFriendRequest($userID,$potentialFriend,$requestID)'><i class='fa fa-check' aria-hidden='true'></i></i></div></div>";
                             }
                             $outputRequests = $outputRequests . "<hr>";
                             echo $outputRequests;
@@ -286,8 +308,99 @@
                 </div>
             </div>
         </div>
-        <div class="col-7 useractivityfeed">
-
+        <div class="col-6 useractivityfeed">
+            <div class="row">
+        <?php
+            if($otherUserId == "-1")
+            {
+                $sql = "SELECT * FROM tbposts WHERE user_id=$userID";
+                $res = mysqli_query($mysqli, $sql);
+                $postcount = 0;
+                while ($row = mysqli_fetch_assoc($res)) {
+                $imagenames = explode(':', $row["post_images"]);
+                $imageLength = count($imagenames);
+                $imageout = "";
+                for ($j = 0; $j < $imageLength; $j++) {
+                    if ($j == 0) {
+                    $imageout = $imageout . "<div class='carousel-item active'>
+                                        <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
+                                        </div>";
+                    } else {
+                    $imageout = $imageout . "<div class='carousel-item'>
+                                        <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
+                                </div>";
+                    }
+                }
+                echo "<div class='col-sm-12 col-md-4 mb-5' id='post" . $row["post_id"] . "'>
+                                <div class='card userImageFeed'>
+                                <div id='carouselExampleControls' class='carousel slide mb-1' data-ride='carousel'>
+                                    <div class='carousel-inner'>" .
+                    $imageout
+                    . "</div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-6'>
+                                    <a class='postnamelink' href='postpage.php?postID=" . $row["post_id"] . "&userID=$userID' ><h3 class='ml-1'>" . $row["post_name"] . "</h3></a> 
+                                    </div>
+                                    <div class='col-6 mb-1'>
+                                    <h5>" . $row["post_hashtags"] . "</h5>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-12'>
+                                    <p class='ml-1'>" . $row["post_description"] . "</p>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>";
+                }
+            }
+            else
+            {
+                $sql = "SELECT * FROM tbposts WHERE user_id=$otherUserId";
+                $res = mysqli_query($mysqli, $sql);
+                $postcount = 0;
+                while ($row = mysqli_fetch_assoc($res)) {
+                $imagenames = explode(':', $row["post_images"]);
+                $imageLength = count($imagenames);
+                $imageout = "";
+                for ($j = 0; $j < $imageLength; $j++) {
+                    if ($j == 0) {
+                    $imageout = $imageout . "<div class='carousel-item active'>
+                                        <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
+                                        </div>";
+                    } else {
+                    $imageout = $imageout . "<div class='carousel-item'>
+                                        <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
+                                </div>";
+                    }
+                }
+                echo "<div class='col-sm-12 col-md-4 mb-5' id='post" . $row["post_id"] . "'>
+                                <div class='card userImageFeed'>
+                                <div id='carouselExampleControls' class='carousel slide mb-1' data-ride='carousel'>
+                                    <div class='carousel-inner'>" .
+                    $imageout
+                    . "</div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-6'>
+                                    <a class='postnamelink' href='postpage.php?postID=" . $row["post_id"] . "&userID=$userID' ><h3 class='ml-1'>" . $row["post_name"] . "</h3></a> 
+                                    </div>
+                                    <div class='col-6 mb-1'>
+                                    <h5>" . $row["post_hashtags"] . "</h5>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-12'>
+                                    <p class='ml-1'>" . $row["post_description"] . "</p>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>";
+                }
+            }
+            ?>
+            </div>
         </div>
         <div class="col-2">
             <?php
@@ -306,7 +419,7 @@
             ?>
         </div>
     </div>
-    
+    <div id="snackbar">Friend added.</div>
     <button onclick="topFunction()" id="backtotopButton" title="Go to top">Top</button>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="../script/profilepageScript.js"></script>
