@@ -110,6 +110,11 @@ if (isset($_GET["id"])) {
             <h3>Home</h3><span class="sr-only">(current)</span>
           </a>
         </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="profilepage.php?userId=<?php echo $userID; ?>">
+            <h3>My Profile</h3>
+          </a>
+        </li>
 
         <li class="navbar-item pull-right">
           <a class="nav-link" href="../php/logout.php" style="float: right;">
@@ -126,8 +131,21 @@ if (isset($_GET["id"])) {
         <div class="offset-1 offset-lg-3 col-12 mt-4">
           <img src="../images/profileimage/World-of-Warcraft-Alliance-HD-Wallpaper.jpg" alt="profile picture" class="profilePicture">
         </div>
-        <div class="col-12 offset-1 offset-lg-2 mt-4">
+        <div class="col-11 offset-1 offset-lg-2 mt-4">
           <h2><?php echo $userFirstName . " " . $userSurname ?></h2>
+        </div>
+        <div class="col-11 offset-1 mt-4">
+          <div class="input-group mb-3">
+            <input type="text" name="searchFriend_text" class="form-control" placeholder="Search Users" aria-label="Search Users" aria-describedby="basic-addon2" id="searchUsersInput">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" onclick="searchUser(<?php echo $userID; ?>)">Search</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-11 offset-1 mt-4">
+          <div class="searchResult">
+            
+          </div>
         </div>
       </div>
     </div>
@@ -155,7 +173,7 @@ if (isset($_GET["id"])) {
                            </div>";
             }
           }
-          echo "<div class='col-sm-12 col-md-6 mb-5' id='post". $row["post_id"] . "'>
+          echo "<div class='col-sm-12 col-md-6 mb-5' id='post" . $row["post_id"] . "'>
                         <div class='card userImageFeed'>
                           <div id='carouselExampleControls' class='carousel slide mb-1' data-ride='carousel'>
                               <div class='carousel-inner'>" .
@@ -195,7 +213,7 @@ if (isset($_GET["id"])) {
                 <input type="text" class="form-control mb-2" placeholder="Name" name="postname">
                 <input type="text" class="form-control mb-2" placeholder="Describtions" name="descripbtions">
                 <input type="text" class="form-control mb-2" placeholder="Hashtags" name="hashtag">
-                <?php echo "<input type='hidden' name='userID' value='$userID'>" ?>
+                <?php echo "<input type='hidden' id='hiddenUserId' name='userID' value='$userID'>" ?>
                 <div class="custom-file mb-3">
                   <input type="file" class="custom-file-input" name="postimages[]" id="customFile" multiple="multiple">
                   <label class="custom-file-label" for="customFile">Upload images</label>
@@ -209,6 +227,9 @@ if (isset($_GET["id"])) {
       </div>
     </div>
   </div>
+  <div id="snackbar">Friend request sent.</div>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="../script/hompageScript.js"></script>
 </body>
 
 </html>
