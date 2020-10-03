@@ -7,6 +7,17 @@ h1
 {
   font-family: 'Permanent Marker', serif;
 }
+
+h2
+{
+  font-family: 'Permanent Marker', serif;
+  font-size: medium;
+}
+a
+{
+  color: black;
+  text-decoration: none;
+}
 p
 {
   font-family: 'Source Sans Pro', serif;

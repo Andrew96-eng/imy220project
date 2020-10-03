@@ -54,15 +54,15 @@
         }
         if($friendRequestPending)
         {
-            $output = $output . "<div class='searchUser'><h2>$name $surname</h2><i id='requestpending' class='fa fa-clock-o' aria-hidden='true'></i></div>";
+            $output = $output . "<div class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$currentUser&otherUserId=$userID'><h2>$name $surname</h2></a><i id='requestpending' class='fa fa-clock-o' aria-hidden='true'></i></div>";
         }
         else if($areFriends1 || $areFriends2)
         {
-            $output = $output . "<div class='searchUser'><h2>$name $surname</h2><div onclick='messageFriend($userID)'><i class='fa fa-envelope' aria-hidden='true'></i></div></div>";
+            $output = $output . "<div class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$currentUser&otherUserId=$userID'><h2>$name $surname</h2></a><div onclick='messageFriend($currentUser,$userID)'><i class='fa fa-envelope' aria-hidden='true'></i></div></div>";
         }
         else
         {
-            $output = $output . "<div class='searchUser'><h2>$name $surname</h2><div onclick='addFriend($userID)'><i class='fa fa-user-plus' aria-hidden='true'></i></div></div>";
+            $output = $output . "<div class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$currentUser&otherUserId=$userID'><h2>$name $surname</h2></a><div onclick='addFriend($userID)'><i class='fa fa-user-plus' aria-hidden='true'></i></div></div>";
         }
         echo $output;
     }

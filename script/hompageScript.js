@@ -40,7 +40,7 @@ function addFriend(userId)
     });
 }
 
-function messageFriend(userId)
+function messageFriend(currentUserId, userId)
 {
 
 }
