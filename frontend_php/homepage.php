@@ -33,38 +33,36 @@ if (isset($_GET["id"])) {
   $totalfiles = count($_FILES['postimages']['name']);
 
   for ($i = 0; $i < $totalfiles; $i++) {
-    if (strpos($_FILES["postimages"]["tmp_name"], ":") == false) {
-      $imagePath = "../images/";
+    $imagePath = "../images/";
 
-      $picToUpload = basename($_FILES["postimages"]["name"][$i]);
-      $tmpFilePath = $_FILES['postimages']['tmp_name'][$i];
+    $picToUpload = basename($_FILES["postimages"]["name"][$i]);
+    $tmpFilePath = $_FILES['postimages']['tmp_name'][$i];
 
-      if ($tmpFilePath != "") {
-        $imagePath = $imagePath . $picToUpload;
+    if ($tmpFilePath != "") {
+      $imagePath = $imagePath . $picToUpload;
 
-        move_uploaded_file($_FILES["postimages"]["tmp_name"][$i], $imagePath);
+      move_uploaded_file($_FILES["postimages"]["tmp_name"][$i], $imagePath);
 
-        $insertSql = "INSERT INTO tbgallery (user_id, filename) VALUES ($userID, '$picToUpload')";
+      $insertSql = "INSERT INTO tbgallery (user_id, filename) VALUES ($userID, '$picToUpload')";
 
-        $response = $mysqli->query($insertSql);
-        if ($response) {
-          //success
-          if ($postImages == "") {
-            $postImages = $postImages . $picToUpload;
-          } else {
-            $postImages = $postImages . ":" . $picToUpload;
-          }
+      $response = $mysqli->query($insertSql);
+      if ($response) {
+        //success
+        if ($postImages == "") {
+          $postImages = $postImages . $picToUpload;
         } else {
-          echo '<div class="alert alert-danger mt-3" role="alert">
+          $postImages = $postImages . ":" . $picToUpload;
+        }
+      } else {
+        echo '<div class="alert alert-danger mt-3" role="alert">
 								Failed to insert into gallery table.
 							</div>';
-        }
       }
     }
-    $insertPost = "INSERT INTO tbposts (post_name, post_description, post_hashtags, post_images, user_id) VALUES ('" . $_POST["postname"] . "','" . $_POST["descripbtions"] . "','" . $_POST["hashtag"] . "','" . $postImages . "'," . $userID . ")";
-    $response = $mysqli->query($insertPost);
-    if ($response) {
-    }
+  }
+  $insertPost = "INSERT INTO tbposts (post_name, post_description, post_hashtags, post_images, user_id) VALUES ('" . $_POST["postname"] . "','" . $_POST["descripbtions"] . "','" . $_POST["hashtag"] . "','" . $postImages . "'," . $userID . ")";
+  $response = $mysqli->query($insertPost);
+  if ($response) {
   }
 } else {
   die("No user logged in");
@@ -132,7 +130,7 @@ if (isset($_GET["id"])) {
     <div class="col-lg-3 profile">
       <div class="row">
         <div class="offset-1 offset-lg-3 col-12 mt-4">
-          <img src="../images/<?php echo $userProPic;?>" alt="profile picture" class="profilePicture">
+          <img src="../images/<?php echo $userProPic; ?>" alt="profile picture" class="profilePicture">
         </div>
         <div class="col-11 offset-1 offset-lg-2 mt-4">
           <h2><?php echo $userFirstName . " " . $userSurname ?></h2>
@@ -147,7 +145,7 @@ if (isset($_GET["id"])) {
         </div>
         <div class="col-11 offset-1 mt-4">
           <div class="searchResult">
-            
+
           </div>
         </div>
       </div>
@@ -199,36 +197,34 @@ if (isset($_GET["id"])) {
                         </div>
                       </div>";
         }
-        
+
         $freindsql = "SELECT * FROM friends WHERE user_id_1 = $userID";
         $freindsql2 = "SELECT * FROM friends WHERE user_id_2 = $userID";
         $res2 = mysqli_query($mysqli, $freindsql);
-        while ($row2 = mysqli_fetch_assoc($res2))
-        {
+        while ($row2 = mysqli_fetch_assoc($res2)) {
           $sql2 = "SELECT * FROM tbposts WHERE user_id=" . $row2["user_id_2"];
           $res3 = mysqli_query($mysqli, $sql2);
-          while ($row3 = mysqli_fetch_assoc($res3))
-          {
-              $imagenames = explode(':', $row3["post_images"]);
-              $imageLength = count($imagenames);
-              $imageout = "";
-              for ($j = 0; $j < $imageLength; $j++) {
-                if ($j == 0) {
-                  $imageout = $imageout . "<div class='carousel-item active'>
+          while ($row3 = mysqli_fetch_assoc($res3)) {
+            $imagenames = explode(':', $row3["post_images"]);
+            $imageLength = count($imagenames);
+            $imageout = "";
+            for ($j = 0; $j < $imageLength; $j++) {
+              if ($j == 0) {
+                $imageout = $imageout . "<div class='carousel-item active'>
                                       <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
                                     </div>";
-                } else {
-                  $imageout = $imageout . "<div class='carousel-item'>
+              } else {
+                $imageout = $imageout . "<div class='carousel-item'>
                                       <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
                               </div>";
-                }
               }
-              $postOut = $postOut . "<div class='col-sm-12 col-md-6 mb-5' id='post" . $row3["post_id"] . "'>
+            }
+            $postOut = $postOut . "<div class='col-sm-12 col-md-6 mb-5' id='post" . $row3["post_id"] . "'>
                             <div class='card userImageFeed'>
                               <div id='carouselExampleControls' class='carousel slide mb-1' data-ride='carousel'>
                                   <div class='carousel-inner'>" .
-                $imageout
-                . "</div>
+              $imageout
+              . "</div>
                               </div>
                               <div class='row'>
                                 <div class='col-6'>
@@ -245,35 +241,33 @@ if (isset($_GET["id"])) {
                               </div>
                             </div>
                           </div>";
-            }
+          }
         }
         $res4 = mysqli_query($mysqli, $freindsql2);
-        while ($row4 = mysqli_fetch_assoc($res4))
-        {
+        while ($row4 = mysqli_fetch_assoc($res4)) {
           $sql5 = "SELECT * FROM tbposts WHERE user_id=" . $row4["user_id_1"];
           $res4 = mysqli_query($mysqli, $sql5);
-          while ($row4 = mysqli_fetch_assoc($res4))
-          {
-              $imagenames = explode(':', $row4["post_images"]);
-              $imageLength = count($imagenames);
-              $imageout = "";
-              for ($j = 0; $j < $imageLength; $j++) {
-                if ($j == 0) {
-                  $imageout = $imageout . "<div class='carousel-item active'>
+          while ($row4 = mysqli_fetch_assoc($res4)) {
+            $imagenames = explode(':', $row4["post_images"]);
+            $imageLength = count($imagenames);
+            $imageout = "";
+            for ($j = 0; $j < $imageLength; $j++) {
+              if ($j == 0) {
+                $imageout = $imageout . "<div class='carousel-item active'>
                                       <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
                                     </div>";
-                } else {
-                  $imageout = $imageout . "<div class='carousel-item'>
+              } else {
+                $imageout = $imageout . "<div class='carousel-item'>
                                       <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
                               </div>";
-                }
               }
-              $postOut = $postOut . "<div class='col-sm-12 col-md-6 mb-5' id='post" . $row4["post_id"] . "'>
+            }
+            $postOut = $postOut . "<div class='col-sm-12 col-md-6 mb-5' id='post" . $row4["post_id"] . "'>
                             <div class='card userImageFeed'>
                               <div id='carouselExampleControls' class='carousel slide mb-1' data-ride='carousel'>
                                   <div class='carousel-inner'>" .
-                $imageout
-                . "</div>
+              $imageout
+              . "</div>
                               </div>
                               <div class='row'>
                                 <div class='col-6'>
@@ -290,45 +284,43 @@ if (isset($_GET["id"])) {
                               </div>
                             </div>
                           </div>";
-            }
+          }
         }
         echo $postOut;
 
         ?>
-        </div>
-        <div class="row">
+      </div>
+      <div class="row">
         <hr>
         <h3>People You Follow's Posts:</h3>
         <?php
-          $followSql = "SELECT * FROM tbfollowers WHERE follower_userId= $userID";
-          $resFollow = mysqli_query($mysqli, $followSql);
-          while($row66 = mysqli_fetch_assoc($resFollow))
-          {
-            $otherUserID = $row66["follows_userId"];
-            $sql6 = "SELECT * FROM tbposts WHERE user_id=$otherUserID";
-            $res7 = mysqli_query($mysqli, $sql6);
-            while ($row6 = mysqli_fetch_assoc($res7))
-            {
-                $imagenames = explode(':', $row6["post_images"]);
-                $imageLength = count($imagenames);
-                $imageout = "";
-                for ($j = 0; $j < $imageLength; $j++) {
-                  if ($j == 0) {
-                    $imageout = $imageout . "<div class='carousel-item active'>
+        $followSql = "SELECT * FROM tbfollowers WHERE follower_userId= $userID";
+        $resFollow = mysqli_query($mysqli, $followSql);
+        while ($row66 = mysqli_fetch_assoc($resFollow)) {
+          $otherUserID = $row66["follows_userId"];
+          $sql6 = "SELECT * FROM tbposts WHERE user_id=$otherUserID";
+          $res7 = mysqli_query($mysqli, $sql6);
+          while ($row6 = mysqli_fetch_assoc($res7)) {
+            $imagenames = explode(':', $row6["post_images"]);
+            $imageLength = count($imagenames);
+            $imageout = "";
+            for ($j = 0; $j < $imageLength; $j++) {
+              if ($j == 0) {
+                $imageout = $imageout . "<div class='carousel-item active'>
                                         <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
                                       </div>";
-                  } else {
-                    $imageout = $imageout . "<div class='carousel-item'>
+              } else {
+                $imageout = $imageout . "<div class='carousel-item'>
                                         <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
                                 </div>";
-                  }
-                }
-                $postOut = $postOut . "<div class='col-sm-12 col-md-6 mb-5' id='post" . $row6["post_id"] . "'>
+              }
+            }
+            $postOut = $postOut . "<div class='col-sm-12 col-md-6 mb-5' id='post" . $row6["post_id"] . "'>
                               <div class='card userImageFeed'>
                                 <div id='carouselExampleControls' class='carousel slide mb-1' data-ride='carousel'>
                                     <div class='carousel-inner'>" .
-                  $imageout
-                  . "</div>
+              $imageout
+              . "</div>
                                 </div>
                                 <div class='row'>
                                   <div class='col-6'>
@@ -345,8 +337,8 @@ if (isset($_GET["id"])) {
                                 </div>
                               </div>
                             </div>";
-              }
           }
+        }
         ?>
       </div>
 
@@ -375,9 +367,13 @@ if (isset($_GET["id"])) {
           </form>
         </div>
       </div>
+
+      <a href="albumpage.php?userId=<?php echo $userID; ?>">
+        <h3>Albums</h3>
+      </a>
     </div>
   </div>
-  
+
   <button onclick="topFunction()" id="backtotopButton" title="Go to top">Top</button>
   <div id="snackbar">Friend request sent.</div>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

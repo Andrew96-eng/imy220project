@@ -36,7 +36,7 @@ if (isset($_GET["postID"])) {
     $postID = $_POST["post_id"];
     $userID = $_POST["user_id"];
     $commentText = $_POST["comment_text"];
-    $sql = "INSERT INTO tbcomments (post_id, comment_text, user_id) VALUES ($postID, '$commentText',".$_POST["user_id"].")";
+    $sql = "INSERT INTO tbcomments (post_id, comment_text, user_id) VALUES ($postID, '$commentText'," . $_POST["user_id"] . ")";
     $response = $mysqli->query($sql);
     if ($response) {
         $sql2 = "SELECT * FROM tbposts WHERE post_id = $postID";
@@ -53,9 +53,7 @@ if (isset($_GET["postID"])) {
 								Failed to insert into gallery table.' . $sql . '
 							</div>';
     }
-} 
-else if (isset($_POST["updatedescripbtions"])) 
-{
+} else if (isset($_POST["updatedescripbtions"])) {
     $postID = $_POST["post_id"];
     $userID = $_POST["user_id"];
     $sql = "SELECT * FROM tbposts WHERE post_id = $postID";
@@ -69,57 +67,41 @@ else if (isset($_POST["updatedescripbtions"]))
     }
     $newDesc = $_POST["updatedescripbtions"];
     $newHash = $_POST["updatehashtag"];
-    if (empty($newDesc) !== true) 
-    {
-        if(empty($newHash) !== true)
-        {
+    if (empty($newDesc) !== true) {
+        if (empty($newHash) !== true) {
             #both set
             $updateBothSql = "UPDATE tbposts SET post_description = '$newDesc', post_hashtags = '$newHash' WHERE post_id = $postID";
             $response = $mysqli->query($updateBothSql);
-            if ($response) 
-            {
+            if ($response) {
                 echo "<script>console.log('Updated.');</script>";
-            }
-            else
-            {
+            } else {
                 echo "<script>console.log('$updateBothSql');</script>";
             }
             $postDesc = $newDesc;
-            $postHashtags = $newHash; 
-        }
-        else
-        {
+            $postHashtags = $newHash;
+        } else {
             #only desc
             $updateDescSql = "UPDATE tbposts SET post_description = '$newDesc' WHERE post_id = $postID";
             $response = $mysqli->query($updateDescSql);
-            if ($response) 
-            {
+            if ($response) {
                 echo "<script>console.log('Updated.');</script>";
-            }
-            else
-            {
+            } else {
                 echo "<script>console.log('$updateDescSql');</script>";
             }
             $postDesc = $newDesc;
         }
-    } 
-    else if(empty($newHash) !== true) 
-    {
+    } else if (empty($newHash) !== true) {
         #only hash  
         $updateHashSql = "UPDATE tbposts SET post_hashtags= '$newHash' WHERE post_id = $postID";
         $response = $mysqli->query($updateHashSql);
-        if ($response) 
-        {
+        if ($response) {
             echo "<script>console.log('Updated.');</script>";
-        }
-        else
-        {
+        } else {
             echo "<script>console.log('$updateHashSql');</script>";
-        } 
-        $postHashtags = $newHash; 
+        }
+        $postHashtags = $newHash;
     }
-} 
-else if ($postID != "") {
+} else if ($postID != "") {
     $sql = "SELECT * FROM tbposts WHERE post_id = $postID";
     $res = mysqli_query($mysqli, $sql);
     while ($row = mysqli_fetch_assoc($res)) {

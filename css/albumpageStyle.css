@@ -1,0 +1,18 @@
+.colabFriend
+{
+    cursor: pointer;
+}
+.albumCard
+{
+    background-color: rgba(240, 238, 238, 0.75);
+    border: 1px solid rgb(75, 74, 74);
+    border-radius: 1em;
+    padding: 10px;
+}
+.albuminfo
+{
+    display: inline-block;
+}
+.albumposts{
+    display: inline-block;
+}
