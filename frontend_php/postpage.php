@@ -8,6 +8,8 @@ $postDesc = "";
 $postHashtags = "";
 $postimages;
 $postUserID = "";
+$usersName = "";
+$isadminaccount = false;
 
 function loadPostInfo()
 {
@@ -17,7 +19,15 @@ if (isset($_GET["postID"])) {
     if (isset($_GET["userID"])) {
         $userID = $_GET["userID"];
         $postID = $_GET["postID"];
-
+        $getUserRole = "SELECT * FROM tbusers WHERE user_id = $userID";
+        $res1 = mysqli_query($mysqli, $getUserRole);
+        while($row1 = mysqli_fetch_assoc($res1))
+        {
+            if($row1["role"] == "A")
+            {
+                $isadminaccount = true;
+            }
+        }
         $sql = "SELECT * FROM tbposts WHERE post_id = $postID";
         $res = mysqli_query($mysqli, $sql);
         while ($row = mysqli_fetch_assoc($res)) {
@@ -35,6 +45,15 @@ if (isset($_GET["postID"])) {
 } else if (isset($_POST["comment_text"])) {
     $postID = $_POST["post_id"];
     $userID = $_POST["user_id"];
+    $getUserRole = "SELECT * FROM tbusers WHERE user_id = $userID";
+        $res1 = mysqli_query($mysqli, $getUserRole);
+        while($row1 = mysqli_fetch_assoc($res1))
+        {
+            if($row1["role"] == "A")
+            {
+                $isadminaccount = true;
+            }
+        }
     $commentText = $_POST["comment_text"];
     $sql = "INSERT INTO tbcomments (post_id, comment_text, user_id) VALUES ($postID, '$commentText'," . $_POST["user_id"] . ")";
     $response = $mysqli->query($sql);
@@ -56,6 +75,15 @@ if (isset($_GET["postID"])) {
 } else if (isset($_POST["updatedescripbtions"])) {
     $postID = $_POST["post_id"];
     $userID = $_POST["user_id"];
+    $getUserRole = "SELECT * FROM tbusers WHERE user_id = $userID";
+        $res1 = mysqli_query($mysqli, $getUserRole);
+        while($row1 = mysqli_fetch_assoc($res1))
+        {
+            if($row1["role"] == "A")
+            {
+                $isadminaccount = true;
+            }
+        }
     $sql = "SELECT * FROM tbposts WHERE post_id = $postID";
     $res = mysqli_query($mysqli, $sql);
     while ($row = mysqli_fetch_assoc($res)) {
@@ -165,6 +193,13 @@ if (isset($_GET["postID"])) {
                         <h3>My Profile</h3>
                     </a>
                 </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="albumpage.php?userId=<?php echo $userID; ?>">
+                    <h3>Albums</h3>
+                    </a>
+                </li>
+
                 <li class="navbar-item pull-right">
                     <a class="nav-link" href="../php/logout.php" style="float: right;">
                         <h3>Logout</h3>
@@ -212,7 +247,7 @@ if (isset($_GET["postID"])) {
                 $commentUserRes = mysqli_query($mysqli, $commentUserSql);
                 while ($row2 = mysqli_fetch_assoc($commentUserRes)) {
                     $outString = "<div id='comment$commentID' class='comment-block'>" . $row["comment_text"] . "<div class='comment-block-user mr-1 mt-2 mb-1' style='float:right;'>-" . $row2["user_name"] . "<span onclick='reportComment($commentID)'> <i class='ml-2 fa fa-flag' aria-hidden='true'></i></span>";
-                    if ($postUserID == $userID) {
+                    if ($postUserID == $userID || $isadminaccount) {
                         $outString = $outString . "<span onclick='deleteComment($commentID)'> <i class='ml-2 fa fa-trash' aria-hidden='true'></i></span>";
                     }
                     $outString = $outString . "</div></div>";
@@ -236,11 +271,26 @@ if (isset($_GET["postID"])) {
         <div class="offset-md-1 offset-sm-0 col-lg-3 col-sm-12">
             <h2>Description:</h2>
             <hr>
+            <?php
+                if($userID == $postUserID)
+                {
+                    echo "<h2>Your post.</h2>";
+                }
+                else
+                {
+                    $sql = "SELECT * FROM tbusers WHERE user_id=" . $postUserID;
+                    $res = mysqli_query($mysqli, $sql);
+                    while ($row = mysqli_fetch_assoc($res)) {
+                        $usersName = $row["user_name"];
+                    }
+                    echo "<h3>This post belongs to: $usersName.</h3>";
+                }
+            ?>
             <p><?php echo $postDesc; ?></p>
             <h5 class="mb-5"><?php echo $postHashtags; ?></h5>
 
             <?php
-            if ($userID == $postUserID) {
+            if ($userID == $postUserID || $isadminaccount) {
                 echo "<h2>Update:</h2>
                     <form method='POST' action='postpage.php'>
                         <div class='form-group'>

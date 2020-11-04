@@ -6,6 +6,7 @@ $otherUserId = "-1";
 $userFirstName = "";
 $userSurname = "";
 $userProPic = "";
+$isadminaccount = false;
 if (isset($_GET["userId"])) {
     $userID = $_GET["userId"];
     $sql = "SELECT * FROM tbusers WHERE user_id=" . $userID;
@@ -14,9 +15,22 @@ if (isset($_GET["userId"])) {
         $userFirstName = $row["user_name"];
         $userSurname = $row["user_surname"];
         $userProPic = $row["profile_picture"];
+        if($row["role"] == "A")
+        {
+            $isadminaccount = true;
+        }
     }
 } else if (isset($_POST["submitpropic"])) {
     $userID = $_POST["userID"];
+    $getUserRole = "SELECT * FROM tbusers WHERE user_id = $userID";
+        $res1 = mysqli_query($mysqli, $getUserRole);
+        while($row1 = mysqli_fetch_assoc($res1))
+        {
+            if($row1["role"] == "A")
+            {
+                $isadminaccount = true;
+            }
+        }
     $imagePath = "../images/";
     $picToUpload = basename($_FILES["userProfilepic"]["name"][0]);
     $tmpFilePath = $_FILES['userProfilepic']['tmp_name'][0];
@@ -44,6 +58,15 @@ if (isset($_GET["userId"])) {
     }
 } else if (isset($_GET["currentUserId"])) {
     $userID = $_GET["currentUserId"];
+    $getUserRole = "SELECT * FROM tbusers WHERE user_id = $userID";
+        $res1 = mysqli_query($mysqli, $getUserRole);
+        while($row1 = mysqli_fetch_assoc($res1))
+        {
+            if($row1["role"] == "A")
+            {
+                $isadminaccount = true;
+            }
+        }
     $otherUserId = $_GET["otherUserId"];
     if ($userID == $otherUserId) {
         $otherUserId = "-1";
@@ -112,6 +135,12 @@ if (isset($_GET["userId"])) {
                 <li class="nav-item active">
                     <a class="nav-link" href="profilepage.php?userId=<?php echo $userID; ?>">
                         <h3>My Profile</h3><span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="albumpage.php?userId=<?php echo $userID; ?>">
+                    <h3>Albums</h3>
                     </a>
                 </li>
 
@@ -358,7 +387,7 @@ if (isset($_GET["userId"])) {
         </div>
         <div class="col-2">
             <?php
-            if ($otherUserId == "-1") {
+            if ($otherUserId == "-1" || $isadminaccount) {
                 echo "<form action='profilepage.php' method='post' enctype='multipart/form-data'>
                             <div class='uploadpp'>
                                 <span class='uploadpp_prompt'>Drop picture here or click to upload a profile picture</span>

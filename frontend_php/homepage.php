@@ -5,6 +5,7 @@ $userFirstName;
 $userSurname;
 $userID;
 $userProPic;
+$isAdminAccount = false;
 if (isset($_GET["id"])) {
   $userID = $_GET["id"];
   $sql = "SELECT * FROM tbusers WHERE user_id=" . $_GET["id"];
@@ -13,6 +14,9 @@ if (isset($_GET["id"])) {
     $userFirstName = $row["user_name"];
     $userSurname = $row["user_surname"];
     $userProPic = $row["profile_picture"];
+    if ($row["role"] == "A") {
+      $isAdminAccount = true;
+    }
   }
 } else if (isset($_POST["postSubmit"])) {
   $postImages = "";
@@ -117,6 +121,12 @@ if (isset($_GET["id"])) {
           </a>
         </li>
 
+        <li class="nav-item active">
+          <a class="nav-link" href="albumpage.php?userId=<?php echo $userID; ?>">
+            <h3>Albums</h3>
+          </a>
+        </li>
+
         <li class="navbar-item pull-right">
           <a class="nav-link" href="../php/logout.php" style="float: right;">
             <h3>Logout</h3>
@@ -133,7 +143,9 @@ if (isset($_GET["id"])) {
           <img src="../images/<?php echo $userProPic; ?>" alt="profile picture" class="profilePicture">
         </div>
         <div class="col-11 offset-1 offset-lg-2 mt-4">
-          <h2><?php echo $userFirstName . " " . $userSurname ?></h2>
+          <a class="linky" href="profilepage.php?userId=<?php echo $userID; ?>">
+            <h2><?php echo $userFirstName . " " . $userSurname ?></h2>
+          </a>
         </div>
         <div class="col-11 offset-1 mt-4">
           <div class="input-group mb-3">
@@ -150,12 +162,26 @@ if (isset($_GET["id"])) {
         </div>
       </div>
     </div>
-    <div class="col-lg-5 activityFeed">
-      <h1>Activity Feed</h1>
-
+    <div class="col-lg-6 activityFeed">
+      
+          <?php
+              if($isAdminAccount)
+              {
+                echo "<h1>Activity Feed of All posts.</h1>";
+              }
+              else
+              {
+                echo "<h1>Activity Feed of Yours and Friends posts</h1>";
+              }
+          ?>
       <div class="row">
+        <hr>
+        
         <?php
-        $postOut = "";
+        if($isAdminAccount == false)
+        {
+          
+          $postOut = "";
         $sql = "SELECT * FROM tbposts WHERE user_id=$userID";
         $res = mysqli_query($mysqli, $sql);
         $postcount = 0;
@@ -287,12 +313,57 @@ if (isset($_GET["id"])) {
           }
         }
         echo $postOut;
-
+        }
+        else
+        {
+          
+          $postOut = "";
+          $sql = "SELECT * FROM tbposts";
+          $res = mysqli_query($mysqli, $sql);
+          $postcount = 0;
+          while ($row = mysqli_fetch_assoc($res)) {
+            $imagenames = explode(':', $row["post_images"]);
+            $imageLength = count($imagenames);
+            $imageout = "";
+            for ($j = 0; $j < $imageLength; $j++) {
+              if ($j == 0) {
+                $imageout = $imageout . "<div class='carousel-item active'>
+                                    <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
+                                  </div>";
+              } else {
+                $imageout = $imageout . "<div class='carousel-item'>
+                                    <img class='d-block w-100 postImage' src='../images/" . $imagenames[$j] . "' alt='" . $imagenames[$j] . "'>
+                             </div>";
+              }
+            }
+            $postOut = $postOut . "<div class='col-sm-12 col-md-6 mb-5' id='post" . $row["post_id"] . "'>
+                          <div class='card userImageFeed'>
+                            <div id='carouselExampleControls' class='carousel slide mb-1' data-ride='carousel'>
+                                <div class='carousel-inner'>" .
+              $imageout
+              . "</div>
+                            </div>
+                            <div class='row'>
+                              <div class='col-6'>
+                                <a class='postnamelink' href='postpage.php?postID=" . $row["post_id"] . "&userID=$userID' ><h3 class='ml-1'>" . $row["post_name"] . "</h3></a> 
+                              </div>
+                              <div class='col-6 mb-1'>
+                                <h5>" . $row["post_hashtags"] . "</h5>
+                              </div>
+                            </div>
+                            <div class='row'>
+                              <div class='col-12'>
+                                <p class='ml-1'>" . $row["post_description"] . "</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>";
+          }
+          echo $postOut;
+        }
         ?>
-      </div>
-      <div class="row">
         <hr>
-        <h3>People You Follow's Posts:</h3>
+        <h3 class = "col-12 mb-5">People You Follow's Posts:</h3>
         <?php
         $followSql = "SELECT * FROM tbfollowers WHERE follower_userId= $userID";
         $resFollow = mysqli_query($mysqli, $followSql);
@@ -367,10 +438,6 @@ if (isset($_GET["id"])) {
           </form>
         </div>
       </div>
-
-      <a href="albumpage.php?userId=<?php echo $userID; ?>">
-        <h3>Albums</h3>
-      </a>
     </div>
   </div>
 
