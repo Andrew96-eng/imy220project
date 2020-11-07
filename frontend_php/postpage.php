@@ -55,7 +55,7 @@ if (isset($_GET["postID"])) {
             }
         }
     $commentText = $_POST["comment_text"];
-    $sql = "INSERT INTO tbcomments (post_id, comment_text, user_id) VALUES ($postID, '$commentText'," . $_POST["user_id"] . ")";
+    $sql = "INSERT INTO tbcomments (post_id, comment_text, user_id,reports) VALUES ($postID, '$commentText'," . $_POST["user_id"] . ",0)";
     $response = $mysqli->query($sql);
     if ($response) {
         $sql2 = "SELECT * FROM tbposts WHERE post_id = $postID";

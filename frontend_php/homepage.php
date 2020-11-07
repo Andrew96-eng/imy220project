@@ -132,6 +132,18 @@ if (isset($_GET["id"])) {
             <h3>Logout</h3>
           </a>
         </li>
+
+        <?php
+          if($isAdminAccount)
+          {
+              echo "<li class='navbar-item pull-right mr-5'>
+                      <a class='nav-link' href='reports.php?userID=$userID'>
+                        <h3>Reports</h3>
+                      </a>
+                    </li>";
+          } 
+        ?>
+
       </ul>
     </div>
   </nav>
@@ -188,6 +200,7 @@ if (isset($_GET["id"])) {
         while ($row = mysqli_fetch_assoc($res)) {
           $imagenames = explode(':', $row["post_images"]);
           $imageLength = count($imagenames);
+          
           $imageout = "";
           for ($j = 0; $j < $imageLength; $j++) {
             if ($j == 0) {
@@ -232,6 +245,7 @@ if (isset($_GET["id"])) {
           $res3 = mysqli_query($mysqli, $sql2);
           while ($row3 = mysqli_fetch_assoc($res3)) {
             $imagenames = explode(':', $row3["post_images"]);
+            
             $imageLength = count($imagenames);
             $imageout = "";
             for ($j = 0; $j < $imageLength; $j++) {
@@ -323,6 +337,7 @@ if (isset($_GET["id"])) {
           $postcount = 0;
           while ($row = mysqli_fetch_assoc($res)) {
             $imagenames = explode(':', $row["post_images"]);
+            
             $imageLength = count($imagenames);
             $imageout = "";
             for ($j = 0; $j < $imageLength; $j++) {
@@ -429,11 +444,20 @@ if (isset($_GET["id"])) {
                 <?php echo "<input type='hidden' id='hiddenUserId' name='userID' value='$userID'>" ?>
                 <div class="custom-file mb-3">
                   <input type="file" class="custom-file-input" name="postimages[]" id="customFile" multiple="multiple">
-                  <label class="custom-file-label" for="customFile">Upload images</label>
+                  <label class="custom-file-label" for="customFile">Upload images (multiple)</label>
                 </div>
 
               </div>
               <button type="submit" class="btn" style="width: 100%;background-color: rgba(4, 187, 187, 0.733);" id="postSubmitButton" name="postSubmit">Upload</button>
+            </div>
+          </form>
+          <form action="searchedPosts.php" method="post">
+            <div class="form-group">
+              <div class="inputgroup input-group-md">
+                <input class="form-control mr-sm-2 mb-2" type="search" name="postSearchText" placeholder="Search Posts" aria-label="Search">
+                <?php echo "<input type='hidden' id='hiddenUserId' name='userID' value='$userID'>" ?>
+                <button class="btn btn-outline-info my-2 my-sm-0 mt-1" type="submit" style="width:100%;">Search</button>
+              </div>
             </div>
           </form>
         </div>
