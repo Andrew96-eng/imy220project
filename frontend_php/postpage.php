@@ -10,12 +10,52 @@ $postimages;
 $postUserID = "";
 $usersName = "";
 $isadminaccount = false;
-
+$reportProcessed = false;
 function loadPostInfo()
 {
 }
 
-if (isset($_GET["postID"])) {
+if(isset($_GET["reportid"]))
+{
+    $userID = $_GET["userID"];
+    $postID = $_GET["pid"];
+    $getUserRole = "SELECT * FROM tbusers WHERE user_id = $userID";
+        $res1 = mysqli_query($mysqli, $getUserRole);
+        while($row1 = mysqli_fetch_assoc($res1))
+        {
+            if($row1["role"] == "A")
+            {
+                $isadminaccount = true;
+            }
+        }
+        $sql = "SELECT * FROM tbposts WHERE post_id = $postID";
+        $res = mysqli_query($mysqli, $sql);
+        while ($row = mysqli_fetch_assoc($res)) {
+            $postName = $row["post_name"];
+            $postDesc = $row["post_description"];
+            $postHashtags = $row["post_hashtags"];
+            $postimages = $row["post_images"];
+            $postUserID = $row["user_id"];
+            $newreports = $row["reports_id"];
+
+            if($newreports == '')
+            {
+                $newreports = "'" . $_GET["reportid"] . "'" ;
+            }
+            else
+            {
+                $newreports = "'" . $newreports . ":" . $_GET["reportid"] . "'" ;
+            }
+
+            $reporterSQL = "UPDATE tbposts SET reports_id = $newreports WHERE post_id = $postID";
+            $reporterRes =  mysqli_query($mysqli, $reporterSQL);
+            if($reporterRes)
+            {
+                $reportProcessed = true;
+            }
+        }
+}
+else if (isset($_GET["postID"])) {
     if (isset($_GET["userID"])) {
         $userID = $_GET["userID"];
         $postID = $_GET["postID"];
@@ -302,6 +342,29 @@ if (isset($_GET["postID"])) {
                         <button type='submit' class='btn' style='width: 100%;background-color: rgba(4, 187, 187, 0.733);' id='postUpdateSubmitButton' name='postUpdateSubmit'>Update</button>
                     </form>
                     <button type='button' class='btn btn-danger mt-2' style='width: 100%;'' onclick='deletePost($postID,$userID)'>Delete Post</button>";
+            }
+            else
+            {
+
+                echo "<div class='dropdown show'>
+                            <a class='btn btn-secondary dropdown-toggle' href='#' role='button' id='reportMenu' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                            Report Post
+                            </a>
+                            <div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>";
+
+                $reportSQL = "SELECT * FROM reports";
+                $reportRes =  mysqli_query($mysqli, $reportSQL);
+                while ($row = mysqli_fetch_assoc($reportRes)) 
+                {
+                    $reprotId = $row["reports_id"];
+                    $reportDesc = $row["report_desc"];
+                    echo "<a class='dropdown-item' href='postpage.php?userID=$userID&pid=$postID&reportid=$reprotId'>$reportDesc</a>";
+                }
+                echo "</div></div>";
+                if($reportProcessed)
+                {
+                    echo "<h3 class='mt-5' id='hideReportFeedback'>Report logged.</h3>";
+                }
             }
             ?>
         </div>

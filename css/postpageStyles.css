@@ -57,4 +57,32 @@ h2
   #backtotopButton:hover {
     background-color: rgba(4, 160, 160, 0.733);
   }
+
+  #reportMenu
+  {
+    background-color: rgba(4, 187, 187, 0.733);
+    border: 1px solid rgba(3, 151, 151, 0.733);
+  }
   
+  #hideReportFeedback {
+    -moz-animation: cssAnimation 0s ease-in 5s forwards;
+    -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+    -o-animation: cssAnimation 0s ease-in 5s forwards;
+    animation: cssAnimation 0s ease-in 5s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+@keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        overflow:hidden;
+    }
+}
+@-webkit-keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        visibility:hidden;
+    }
+}

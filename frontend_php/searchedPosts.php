@@ -45,7 +45,7 @@ if(isset($_POST["userID"]))
 <body style="background-image: url(../images/repeated-square/repeated-square.png);">
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="homepage.php?id=<?php echo $userID; ?>">
       <h1>Share You.</h1>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

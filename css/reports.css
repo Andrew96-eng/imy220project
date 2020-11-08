@@ -1,0 +1,12 @@
+.managementButton
+{
+    width: 40%;
+    margin-bottom: 1em;
+    margin-left: 1em;
+}
+
+.addReport
+{
+   background-color:  rgba(4, 187, 187, 0.733);
+   border: 1px solid rgba(3, 151, 151, 0.733);
+}

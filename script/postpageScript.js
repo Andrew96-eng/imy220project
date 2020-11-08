@@ -38,9 +38,6 @@ function reportComment(commentId) {
         data: "commentID=" + commentId,
         success: function (data) {
             phpResult = data;
-            if (phpResult > 10) {
-                deleteComment(commentId);
-            }
         }
     });
 }
