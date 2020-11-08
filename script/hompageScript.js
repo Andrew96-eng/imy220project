@@ -1,7 +1,18 @@
 $(document).ready(function(){
     window.onscroll = function() {scrollFunction()};
+
+    $(".hashtagHeadings").on('click', (event) => {
+      var text = event.currentTarget.children[0].innerText;
+      var userId = event.currentTarget.attributes[1].value;
+      searchHashtag(userId, text);
+    });
   });
 
+
+function searchHashtag(userid, text)
+{
+  window.location.href = 'searchedPosts.php?userID=' + userid + "&text=" + text;
+}
 
 
 function scrollFunction() {

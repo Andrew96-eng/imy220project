@@ -157,6 +157,7 @@ if (isset($_GET["userId"])) {
             $friendSql = "SELECT * FROM friends WHERE user_id_1 = $userID OR user_id_2 = $userID";
             $res3 = mysqli_query($mysqli, $friendSql);
             $friendList = "";
+            $counter = 0;
             while ($row3 = mysqli_fetch_assoc($res3)) {
                 $friendId;
                 if ($row3["user_id_1"] == $userID) {
@@ -166,7 +167,7 @@ if (isset($_GET["userId"])) {
                 }
                 $friendDetails = "SELECT * FROM tbusers WHERE user_id = $friendId";
                 $res4 = mysqli_query($mysqli, $friendDetails);
-                $counter = 0;
+                
                 while ($row4 = mysqli_fetch_assoc($res4)) {
                     $friendName = $row4["user_name"];
                     $friendSurname = $row4["user_surname"];

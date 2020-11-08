@@ -15,22 +15,19 @@ if (isset($_GET["userId"])) {
         $userFirstName = $row["user_name"];
         $userSurname = $row["user_surname"];
         $userProPic = $row["profile_picture"];
-        if($row["role"] == "A")
-        {
+        if ($row["role"] == "A") {
             $isadminaccount = true;
         }
     }
 } else if (isset($_POST["submitpropic"])) {
     $userID = $_POST["userID"];
     $getUserRole = "SELECT * FROM tbusers WHERE user_id = $userID";
-        $res1 = mysqli_query($mysqli, $getUserRole);
-        while($row1 = mysqli_fetch_assoc($res1))
-        {
-            if($row1["role"] == "A")
-            {
-                $isadminaccount = true;
-            }
+    $res1 = mysqli_query($mysqli, $getUserRole);
+    while ($row1 = mysqli_fetch_assoc($res1)) {
+        if ($row1["role"] == "A") {
+            $isadminaccount = true;
         }
+    }
     $imagePath = "../images/";
     $picToUpload = basename($_FILES["userProfilepic"]["name"][0]);
     $tmpFilePath = $_FILES['userProfilepic']['tmp_name'][0];
@@ -59,14 +56,12 @@ if (isset($_GET["userId"])) {
 } else if (isset($_GET["currentUserId"])) {
     $userID = $_GET["currentUserId"];
     $getUserRole = "SELECT * FROM tbusers WHERE user_id = $userID";
-        $res1 = mysqli_query($mysqli, $getUserRole);
-        while($row1 = mysqli_fetch_assoc($res1))
-        {
-            if($row1["role"] == "A")
-            {
-                $isadminaccount = true;
-            }
+    $res1 = mysqli_query($mysqli, $getUserRole);
+    while ($row1 = mysqli_fetch_assoc($res1)) {
+        if ($row1["role"] == "A") {
+            $isadminaccount = true;
         }
+    }
     $otherUserId = $_GET["otherUserId"];
     if ($userID == $otherUserId) {
         $otherUserId = "-1";
@@ -140,7 +135,7 @@ if (isset($_GET["userId"])) {
 
                 <li class="nav-item active">
                     <a class="nav-link" href="albumpage.php?userId=<?php echo $userID; ?>">
-                    <h3>Albums</h3>
+                        <h3>Albums</h3>
                     </a>
                 </li>
 
@@ -217,7 +212,15 @@ if (isset($_GET["userId"])) {
                         $res = mysqli_query($mysqli, $sql);
 
                         while ($row = mysqli_fetch_assoc($res)) {
+
                             if ($row["user_id_1"] == $userID) {
+                                $msgSql = "SELECT * FROM tbmessages WHERE to_id = $userID AND from_id = " . $row["user_id_2"];
+                                $msgRes = mysqli_query($mysqli, $msgSql);
+                                $msgCount = 0;
+                                while ($row7 = mysqli_fetch_assoc($msgRes)) {
+                                    $msgCount = $msgCount + 1;
+                                }
+
                                 $friendUserId = $row["user_id_2"];
                                 $friendDetails = "SELECT * FROM tbusers WHERE user_id = $friendUserId";
                                 $friendRes = mysqli_query($mysqli, $friendDetails);
@@ -225,8 +228,20 @@ if (isset($_GET["userId"])) {
                                     $friendName = $row3["user_name"];
                                     $friendSurname = $row3["user_surname"];
                                 }
-                                $outputFriends = $outputFriends . "<span class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$userID&otherUserId=$friendUserId'><h2>$friendName $friendSurname</h2></a><div onclick='messageFriend($userID,$friendUserId)'><i class='fa fa-envelope' aria-hidden='true'></i></div></span>";
+                                if ($msgCount == 0) {
+                                    $outputFriends = $outputFriends . "<span class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$userID&otherUserId=$friendUserId'><h2>$friendName $friendSurname</h2></a><div onclick='messageFriend($userID,$friendUserId)'><i class='fa fa-envelope' aria-hidden='true'></i></div></span>";
+                                } else {
+                                    $outputFriends = $outputFriends . "<span class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$userID&otherUserId=$friendUserId'><h2>$friendName $friendSurname</h2></a><div onclick='messageFriend($userID,$friendUserId)'><i class='fa fa-envelope' aria-hidden='true'></i><h5>New Message</h5></div></span>";
+                                }
                             } else if ($row["user_id_2"] == $userID) {
+
+                                $msgSql = "SELECT * FROM tbmessages WHERE to_id = $userID AND from_id = " . $row["user_id_1"];
+                                $msgRes = mysqli_query($mysqli, $msgSql);
+                                $msgCount = 0;
+                                while ($row7 = mysqli_fetch_assoc($msgRes)) {
+                                    $msgCount = $msgCount + 1;
+                                } 
+
                                 $friendUserId = $row["user_id_1"];
                                 $friendDetails = "SELECT * FROM tbusers WHERE user_id = $friendUserId";
                                 $friendRes = mysqli_query($mysqli, $friendDetails);
@@ -234,7 +249,13 @@ if (isset($_GET["userId"])) {
                                     $friendName = $row3["user_name"];
                                     $friendSurname = $row3["user_surname"];
                                 }
+                                if ($msgCount == 0) {
                                 $outputFriends = $outputFriends . "<span class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$userID&otherUserId=$friendUserId'><h2>$friendName $friendSurname</h2></a><div onclick='messageFriend($userID,$friendUserId)'><i class='fa fa-envelope' aria-hidden='true'></i></div></span>";
+                                }
+                                else
+                                {
+                                $outputFriends = $outputFriends . "<span class='searchUser'><a style='color: black;text-decoration: none;' href='profilepage.php?currentUserId=$userID&otherUserId=$friendUserId'><h2>$friendName $friendSurname</h2></a><div onclick='messageFriend($userID,$friendUserId)'><i class='fa fa-envelope' aria-hidden='true'></i><h5>New Message</h5></div></span>";
+                                }
                             }
                         }
                         echo $outputFriends;
@@ -392,7 +413,7 @@ if (isset($_GET["userId"])) {
                             <div class='uploadpp'>
                                 <span class='uploadpp_prompt'>Drop picture here or click to upload a profile picture</span>
                                 <input type='file' name='userProfilepic[]' id='userProfilepic' class='uploadpp-input'>
-                                <input type='hidden' id='hiddenUserId' name='userID' value='$userID'> 
+                                <input type='hidden' id='hiddenUserId2' name='userID' value='$userID'> 
                             </div>
                             <button class='btn mt-1' style='width: 100%;background-color: rgba(4, 187, 187, 0.733);' name='submitpropic' type='submit'>Submit</button>
                             <p id='filenamep' class='filenamep_text'></p>
@@ -401,6 +422,31 @@ if (isset($_GET["userId"])) {
             ?>
         </div>
     </div>
+
+    <div id="messageBox">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-11">
+                        <h3 id="chattingnameheading">Chatting with: </h3>
+                    </div>
+                    <div class="col-1">
+                        <span onclick="closeChat()"><i class="fas fa-times"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" id="messageHolder">
+                <div class="input-group mb-3">
+                    <input type="text" name="messagefriend_text" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="basic-addon2" id="messageInput">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="sendMessage(<?php echo $userID; ?>)">Send</button>
+                        <input type="hidden" id="friendmessagingto" value="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="snackbar">Friend added.</div>
     <button onclick="topFunction()" id="backtotopButton" title="Go to top">Top</button>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

@@ -18,6 +18,11 @@ h2
   text-decoration: none;
 }
 
+.hashtagHeadings
+{
+  cursor: pointer;
+}
+
 #backtotopButton {
   display: none;
   position: fixed;

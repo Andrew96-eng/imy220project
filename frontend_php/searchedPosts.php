@@ -14,6 +14,12 @@ if(isset($_POST["userID"]))
         $checkhashtag = true;
     }
 }
+else if($_GET["userID"])
+{
+  $userID = $_GET["userID"];
+  $searchText = $_GET["text"];
+  $checkhashtag = true;
+}
 ?>
 
 <!DOCTYPE html>

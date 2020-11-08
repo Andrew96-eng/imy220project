@@ -77,4 +77,46 @@
   #backtotopButton:hover {
     background-color: rgba(4, 160, 160, 0.733);
   }
-  
+
+  #messageBox
+  {
+      position: absolute;
+      width: 400px;
+      height: 325px;
+      top:60%;
+      left:5%;
+      border: 1px solid black;
+  }
+
+  .card
+  {
+      height: 100%;
+  }
+
+  #messageHolder
+  {
+      overflow: auto;
+  }
+
+  #showhidesentmsg {
+    -moz-animation: cssAnimation 0s ease-in 5s forwards;
+    -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+    -o-animation: cssAnimation 0s ease-in 5s forwards;
+    animation: cssAnimation 0s ease-in 5s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+@keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        overflow:hidden;
+    }
+}
+@-webkit-keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        visibility:hidden;
+    }
+}

@@ -69,6 +69,8 @@ if (isset($_GET["id"])) {
   $response = $mysqli->query($insertPost);
   if ($response) {
   }
+  else{
+  }
 } else {
   die("No user logged in");
 }
@@ -227,7 +229,7 @@ if (isset($_GET["id"])) {
                               <a class='postnamelink' href='postpage.php?postID=" . $row["post_id"] . "&userID=$userID' ><h3 class='ml-1'>" . $row["post_name"] . "</h3></a> 
                             </div>
                             <div class='col-6 mb-1'>
-                              <h5>" . $row["post_hashtags"] . "</h5>
+                              <div class='hashtagHeadings' userId=$userID> <h5>" . $row["post_hashtags"] . "</h5></div>
                             </div>
                           </div>
                           <div class='row'>
@@ -279,7 +281,7 @@ if (isset($_GET["id"])) {
                                   <a class='postnamelink' href='postpage.php?postID=" . $row3["post_id"] . "&userID=$userID' ><h3 class='ml-1'>" . $row3["post_name"] . "</h3></a> 
                                 </div>
                                 <div class='col-6 mb-1'>
-                                  <h5>" . $row3["post_hashtags"] . "</h5>
+                                <div class='hashtagHeadings' userId=$userID><h5>" . $row3["post_hashtags"] . "</h5></div>
                                 </div>
                               </div>
                               <div class='row'>
@@ -329,7 +331,7 @@ if (isset($_GET["id"])) {
                                   <a class='postnamelink' href='postpage.php?postID=" . $row4["post_id"] . "&userID=$userID' ><h3 class='ml-1'>" . $row4["post_name"] . "</h3></a> 
                                 </div>
                                 <div class='col-6 mb-1'>
-                                  <h5>" . $row4["post_hashtags"] . "</h5>
+                                <div class='hashtagHeadings' userId=$userID><h5>" . $row4["post_hashtags"] . "</h5></div>
                                 </div>
                               </div>
                               <div class='row'>
@@ -378,7 +380,7 @@ if (isset($_GET["id"])) {
                                 <a class='postnamelink' href='postpage.php?postID=" . $row["post_id"] . "&userID=$userID' ><h3 class='ml-1'>" . $row["post_name"] . "</h3></a> 
                               </div>
                               <div class='col-6 mb-1'>
-                                <h5>" . $row["post_hashtags"] . "</h5>
+                              <div class='hashtagHeadings' userId=$userID><h5>" . $row["post_hashtags"] . "</h5></div>
                               </div>
                             </div>
                             <div class='row'>
@@ -428,7 +430,7 @@ if (isset($_GET["id"])) {
                                     <a class='postnamelink' href='postpage.php?postID=" . $row6["post_id"] . "&userID=$userID' ><h3 class='ml-1'>" . $row6["post_name"] . "</h3></a> 
                                   </div>
                                   <div class='col-6 mb-1'>
-                                    <h5>" . $row6["post_hashtags"] . "</h5>
+                                  <div class='hashtagHeadings' userId=$userID><h5>" . $row6["post_hashtags"] . "</h5></div>
                                   </div>
                                 </div>
                                 <div class='row'>
